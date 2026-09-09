@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "threejs-install-tutorial.md",
+                "file": "noise-and-maps-notes.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "threejs-install-tutorial"
+              "title": "noise-and-maps-notes"
             }
           }
         ],
@@ -114,7 +114,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "threejs-install-tutorial.md",
+                "file": "noise-and-maps-notes.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -133,7 +133,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "threejs-install-tutorial.md",
+                "file": "noise-and-maps-notes.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
@@ -176,7 +176,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "threejs-install-tutorial.md",
+                "file": "noise-and-maps-notes.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
@@ -205,17 +205,22 @@
   },
   "active": "54889b91a6e2df35",
   "lastOpenFiles": [
-    "my-website/node_modules/stats-gl/node_modules/three/examples/jsm/libs/draco/gltf/draco_encoder.js",
-    "my-website/node_modules/stats-gl/node_modules/three/examples/jsm/libs/draco/gltf/draco_decoder.js",
-    "my-website/node_modules/stats-gl/node_modules/three/examples/jsm/libs/draco/gltf/draco_wasm_wrapper.js",
-    "my-website/node_modules/stats-gl/node_modules/three/examples/jsm/libs/draco/gltf/draco_decoder.wasm",
-    "my-website/node_modules/stats-gl/node_modules/three/src/renderers/common/nodes/Nodes.js",
-    "my-website/node_modules/stats-gl/node_modules/three/src/renderers/common/nodes/NodeUniformsGroup.js",
-    "my-website/node_modules/stats-gl/node_modules/three/src/renderers/common/nodes/NodeUniformBuffer.js",
-    "my-website/node_modules/stats-gl/node_modules/three/src/renderers/common/nodes/NodeUniform.js",
-    "my-website/node_modules/stats-gl/node_modules/three/src/renderers/common/nodes/NodeStorageBuffer.js",
-    "my-website/node_modules/stats-gl/node_modules/three/src/renderers/common/nodes/NodeSampler.js",
-    "my-website/node_modules/stats-gl/node_modules/three/src/renderers/common/nodes/NodeSampledTexture.js",
+    "my-website/src/components/TabBar.jsx",
+    "my-website/src/components/SimulationPanel.jsx",
+    "my-website/src/hooks/useTerrainSimulation.js",
+    "my-website/src/hooks",
+    "my-website/src/lib/terrainGeometry.js",
+    "my-website/src/lib/erosion.js",
+    "Hello World.md",
+    "threejs-install-tutorial.md",
+    "noise-and-maps-notes.md",
+    "my-website/src/components/Dropdown.jsx",
+    "my-website/src/lib/baseNoise.js",
+    "my-website/src/components/NumberField.jsx",
+    "my-website/src/components/Scene3D.jsx",
+    "my-website/src/components/TerrainGrid3D.jsx",
+    "react-install-tutorial.md",
+    "git-github-tutorial.md",
     "my-website/node_modules/stats-gl/node_modules/three/examples/jsm/libs/draco/README.md",
     "my-website/node_modules/stats-gl/node_modules/three/examples/jsm/libs/basis/README.md",
     "my-website/node_modules/stats-gl/node_modules/three/src/nodes/materialx/DISCLAIMER.md",
@@ -236,11 +241,6 @@
     "my-website/node_modules/@use-gesture/core/CHANGELOG.md",
     "my-website/node_modules/@babel/types/README.md",
     "my-website/node_modules/@babel/traverse/README.md",
-    "my-website/node_modules/@babel/template/README.md",
-    "my-website/node_modules/@babel/runtime/README.md",
-    "my-website/node_modules/@babel/plugin-transform-react-jsx-source/README.md",
-    "my-website/node_modules/@babel/plugin-transform-react-jsx-self/README.md",
-    "my-website/node_modules/@babel/parser/README.md",
     "my-website/src/assets/vite.svg",
     "my-website/src/assets/react.svg",
     "my-website/src/assets/hero.png",

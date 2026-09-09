@@ -1,121 +1,85 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
+import { useMemo, useState } from 'react'
+import Scene3D from './components/Scene3D'
+import NoisePreview2D from './components/NoisePreview2D'
+import ControlsPanel from './components/ControlsPanel'
+import SimulationPanel from './components/SimulationPanel'
+import TabBar from './components/TabBar'
+import { makeHeightSampler } from './lib/heightField'
+import { useTerrainSimulation } from './hooks/useTerrainSimulation'
 import './App.css'
 
+const DEFAULT_PARAMS = {
+  noiseType: 'simplex',
+  seed: 1,
+  frequency: 1.2,
+  octaves: 4,
+  lacunarity: 2.0,
+  persistence: 0.5,
+  resolution: 48,
+  heightScale: 0.8,
+  shape: 'linear',
+  shapeParam: 0.5,
+}
+
+const TABS = [
+  { key: 'noise', label: 'Noise' },
+  { key: 'simulation', label: 'Simulation' },
+]
+
 function App() {
-  const [count, setCount] = useState(0)
+  const [params, setParams] = useState(DEFAULT_PARAMS)
+  const [activeTab, setActiveTab] = useState('noise')
+
+  const setParam = (key, value) => setParams((prev) => ({ ...prev, [key]: value }))
+
+  // Deliberately NOT keyed on the whole `params` object: heightScale and
+  // resolution don't affect the sampled noise values, and a stray new
+  // `sampleHeight` reference on every param change would make the
+  // simulation hook think the noise stack changed and rebake (wiping out
+  // erosion progress) just from dragging Height Scale mid-simulation.
+  const sampleHeight = useMemo(
+    () => makeHeightSampler(params),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [params.noiseType, params.seed, params.frequency, params.octaves, params.lacunarity, params.persistence, params.shape, params.shapeParam],
+  )
+
+  const sim = useTerrainSimulation({
+    sampleHeight,
+    resolution: params.resolution,
+    heightScale: params.heightScale,
+    simMode: activeTab === 'simulation',
+  })
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
+    <div className="app-shell">
+      <div className="viewport-3d">
+        <Scene3D geometry={sim.geometry} wireframeGeometry={sim.wireframeGeometry} isRunning={sim.isRunning} />
+      </div>
+      <aside className="side-panel">
+        <div className="panel-sticky-header">
+          <h1>Procedural Noise Grid</h1>
+          <NoisePreview2D
+            heightfieldRef={sim.targetHeightfieldRef}
+            gridSize={sim.gridSize}
+            bakeVersion={sim.bakeVersion}
+          />
+          <TabBar tabs={TABS} active={activeTab} onChange={setActiveTab} />
         </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+        {activeTab === 'noise' ? (
+          <ControlsPanel params={params} setParam={setParam} />
+        ) : (
+          <SimulationPanel
+            isRunning={sim.isRunning}
+            phase={sim.phase}
+            start={sim.start}
+            stop={sim.stop}
+            resetTerrain={sim.resetTerrain}
+            erosionParams={sim.erosionParams}
+            setErosionParam={sim.setErosionParam}
+          />
+        )}
+      </aside>
+    </div>
   )
 }
 
